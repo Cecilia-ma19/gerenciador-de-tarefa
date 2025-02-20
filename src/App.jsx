@@ -25,14 +25,49 @@ function App() {
       isCompleted: false,
     },
   ]);
+
+  function onTaskClick(tasksId) {
+    const newTasks = tasks.map((task) => {
+      // PRECISO ATUALIZAR ESSA TAREFA
+      if (task.id === tasksId) {
+        return { ...task, isCompleted: !task.isCompleted };
+      }
+
+      return task;
+    });
+
+    setTasks(newTasks);
+  }
+
+  function onDeleteTaksClick(tasksId) {
+    const newTasks = tasks.filter((task) => task.id !== tasksId);
+
+    setTasks(newTasks);
+  }
+
+  function onAddTaskSubmit(title, description) {
+    const newTask = {
+      id: tasks.length + 1,
+      title,
+      description,
+      isCompleted: false,
+    };
+
+    setTasks([...tasks, newTask]);
+  }
+
   return (
     <div className="w-screen h-screen bg-slate-500 flex justify-center p-6">
-      <div className="w-[500px]">
+      <div className="w-[500px] space-y-4">
         <h1 className="text-3xl text-slate-100 font-bold text-center">
           Gerenciador de Tarefas
         </h1>
-        <AddTask />
-        <Tasks tasks={tasks} />
+        <AddTask onAddTaskSubmit={onAddTaskSubmit} />
+        <Tasks
+          tasks={tasks}
+          onTaskClick={onTaskClick}
+          onDeleteTaksClick={onDeleteTaksClick}
+        />
       </div>
     </div>
   );
